@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
+using Odnogruppniki.Core;
 
 namespace Odnogruppniki
 {
@@ -19,7 +20,8 @@ namespace Odnogruppniki
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
-            app.CreatePerOwinContext<DBContext>(DBContext.Create);
+            app.CreatePerOwinContext(DBContext.Create);
+            app.CreatePerOwinContext(UserManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
