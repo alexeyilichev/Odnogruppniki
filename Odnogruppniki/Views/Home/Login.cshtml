@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<script type="text/javascript">
+    function login() {
+        var log = $("#login").val();
+        var pass = $("#pass").val();
+        var data = {
+            'login': log,
+            'password': pass
+        };
+        $.ajax({
+            type: 'POST',
+            data: data,
+            url: '@Url.Action("Login", "Home")',
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success) {
+                    window.location = '@Url.Action("Index","Home")';
+                } else {
+                    alert(data.Error);
+                }
+            }
+        });
+    }
+</script>
+
+<div>
+    <div class="col-md-3">
+        Login<br />
+        <input type="text" name="login" id="login" />
+    </div>
+    <div class="col-md-3">
+        Password<br />
+        <input type="password" name="pass" id="pass" />
+    </div>
+    <div>
+        <input type="button" name="loginButton" id="loginButton" value="Login" onclick="login()" />
+    </div>
+</div>
+
