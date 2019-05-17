@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Odnogruppniki.Core;
 using Odnogruppniki.Models.DBModels;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetLoginPage()
+        public ActionResult Login()
         {
             return View("Login");
         }
@@ -90,7 +91,7 @@ namespace Odnogruppniki.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            ViewBag.User = HttpContext.GetOwinContext().Authentication.User.Identity.Name;
+            ViewBag.User = GetCurrentUserName();
             return View();
         }
 
@@ -99,6 +100,42 @@ namespace Odnogruppniki.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(string login, string password, int id_group, int id_role)
+        {
+            if(await db.Users.FirstOrDefaultAsync(x => x.login == login) == null)
+            {
+                var newUser = new User
+                {
+                    login = login,
+                    password = PasswordHash.GetPasswordHash(password),
+                    id_group = id_group,
+                    id_role = id_role
+                };
+                db.Users.Add(newUser);
+                await db.SaveChangesAsync();
+                return Json(new { Success = true });
+            }
+            return Json(new { Success = false, Error = "This user already exists!" });
+        }
+
+        private string GetCurrentUserName()
+        {
+            return HttpContext.GetOwinContext().Authentication.User.Identity.Name;
+        }
+
+        private async Task<User> GetCurrentUser()
+        {
+            var name = GetCurrentUserName();
+            return await db.Users.FirstOrDefaultAsync(x => x.login == name);
         }
     }
 }

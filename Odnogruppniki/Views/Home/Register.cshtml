@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+}
+
+<script type="text/javascript">
+    function reg() {
+        var login = $("#login").val();
+        var pass = $("#pass").val();
+        var passConfirm = $("#passConfirm").val();
+        var id_group = 1;
+        var id_role = 1;
+        var data = {
+            'login': login,
+            'password': pass,
+            'id_group': id_group,
+            'id_role': id_role
+        }
+        if (login == "") {
+            alert('Type a login!');
+        } else {
+            if (pass == "") {
+                alert('Type a password!');
+            } else {
+                if (pass != passConfirm) {
+                    alert('Password and its confirmation are not equals!');
+                } else {
+                    $.ajax({
+                        url: '@Url.Action("Register", "Home")',
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.Success) {
+                                window.location = '@Url.Action("Login","Home")';
+                            } else {
+                                alert(data.Error);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        
+        
+    }
+</script>
+
+<h2>Register</h2>
+
+<div>
+    Login<br />
+    <input type="text" id="login" />
+</div>
+<div>
+    Password<br />
+    <input type="password" id="pass" />
+</div>
+<div>
+    Confirm password<br />
+    <input type="password" id="passConfirm" />
+</div>
+<div>
+    Role<br />
+    <select id="roleSelect">
+        <option disabled>Select a role</option>
+        <option value="1">Admin</option>
+    </select>
+</div>
+<div>
+    Group<br />
+    <select id="groupSelect">
+        <option disabled>Select a group</option>
+        <option value="1">PRI-116</option>
+    </select>
+</div>
+<div>
+    <br />
+    <input type="button" id="registerButton" onclick="reg()" value="reg"/>
+</div>
+
