@@ -11,20 +11,20 @@
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:cornflowerblue">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
 
-               @{ 
-                   var isUserAuth = User.Identity.IsAuthenticated;
-               }
+                @{
+                    var isUserAuth = User.Identity.IsAuthenticated;
+                }
 
                 @Html.ActionLink("Одногруппники", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "color:ivory" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                     <li>@Html.ActionLink("Моя страница", "About", "Home", new { area = "" }, new { style = "color:ivory" })</li>
@@ -43,20 +43,29 @@
             </div>
         </div>
     </div>
-    <div class="container pull-left" style="width:15%; height:100%">
-        <div style="width:100%; height:100%; text-align:center">
-            <h2><b>Меню</b></h2>
-            <br /><br />
-            <ul style="text-align:left">
-                <li>@Html.ActionLink("Мои сообщения", "PersonalMessage", "Home")<p></p></li>
-                <li>@Html.ActionLink("Группы", "Groups", "Home")<p></p></li>
-                <li>@Html.ActionLink("Поиск", "Search", "Home")<p></p></li>
-                <li>@Html.ActionLink("Настройки", "Settings", "Home")<p></p></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container body-content pull-right" style="width:85%">
+    <div class="container body-content" style="width:100%">
         @RenderBody()
+        <div class="navbar navbar-inverse navbar-fixed-bottom" style="background-color:cornflowerblue">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="color:ivory">Меню</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Мои сообщения", "PersonalMessage", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Группы", "Groups", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Поиск", "Search", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Настройки", "Settings", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
