@@ -95,17 +95,54 @@ namespace Odnogruppniki.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         [HttpGet]
         public ActionResult Register()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult PersonalMessage()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Groups()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Search()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Settings()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult LogoutPage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                HttpContext.GetOwinContext().Authentication.SignOut(
+                    new AuthenticationProperties { IsPersistent = false }, User.Identity.AuthenticationType);
+                return Json(new { Success = true });
+            } else
+            {
+                return Json(new { Success = false, Error = "User is not login!" });
+            }
         }
 
         [HttpPost]
