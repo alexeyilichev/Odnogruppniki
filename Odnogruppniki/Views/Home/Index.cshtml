@@ -4,9 +4,14 @@
 
 <script type="text/javascript">
     function log() {
-        window.location = '@Url.Action("GetLoginPage","Home")';
+        window.location = '@Url.Action("Login","Home")';
+    }
+
+    function reg() {
+        window.location = '@Url.Action("Register","Home")'
     }
 </script>
 
 <div><h1><b>@ViewBag.UserName</b></h1></div>
 <input type="button" name="log" id="log" value="log" onclick="log()" />
+<input type="button" name="reg" id="reg" value="reg" onclick="reg()" />
