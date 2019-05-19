@@ -6,13 +6,13 @@ namespace Odnogruppniki.Models.DBModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Role
+    [Table("Department")]
+    public partial class Department
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Department()
         {
             PersonalInfoes = new HashSet<PersonalInfo>();
-            Users = new HashSet<User>();
         }
 
         public int id { get; set; }
@@ -21,10 +21,15 @@ namespace Odnogruppniki.Models.DBModels
         [StringLength(30)]
         public string name { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonalInfo> PersonalInfoes { get; set; }
+        public int id_university { get; set; }
+
+        public int id_faculty { get; set; }
+
+        public virtual Faculty Faculty { get; set; }
+
+        public virtual University University { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<PersonalInfo> PersonalInfoes { get; set; }
     }
 }

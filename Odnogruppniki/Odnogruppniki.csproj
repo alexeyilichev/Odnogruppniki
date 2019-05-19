@@ -178,18 +178,24 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Core\UserManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DBModels\DBContext.cs" />
+    <Compile Include="Models\DBModels\Department.cs" />
+    <Compile Include="Models\DBModels\Faculty.cs" />
     <Compile Include="Models\DBModels\Group.cs" />
     <Compile Include="Models\DBModels\GroupMessage.cs" />
     <Compile Include="Models\DBModels\Permission.cs" />
+    <Compile Include="Models\DBModels\PersonalInfo.cs" />
     <Compile Include="Models\DBModels\PersonalMessage.cs" />
     <Compile Include="Models\DBModels\Role.cs" />
     <Compile Include="Models\DBModels\RolePermission.cs" />
+    <Compile Include="Models\DBModels\sysdiagram.cs" />
+    <Compile Include="Models\DBModels\University.cs" />
     <Compile Include="Models\DBModels\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -201,6 +207,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\defaultphoto.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -253,6 +260,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Personal\PersonalInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

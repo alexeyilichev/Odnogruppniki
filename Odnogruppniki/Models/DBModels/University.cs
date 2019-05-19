@@ -6,33 +6,30 @@ namespace Odnogruppniki.Models.DBModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Group
+    [Table("University")]
+    public partial class University
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Group()
+        public University()
         {
-            GroupMessages = new HashSet<GroupMessage>();
-            GroupMessages1 = new HashSet<GroupMessage>();
+            Departments = new HashSet<Department>();
+            Faculties = new HashSet<Faculty>();
             PersonalInfoes = new HashSet<PersonalInfo>();
-            Users = new HashSet<User>();
         }
 
         public int id { get; set; }
 
         [Required]
-        [StringLength(15)]
+        [StringLength(30)]
         public string name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GroupMessage> GroupMessages { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GroupMessage> GroupMessages1 { get; set; }
+        public virtual ICollection<Faculty> Faculties { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonalInfo> PersonalInfoes { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
     }
 }
