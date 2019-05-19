@@ -36,9 +36,9 @@
                         else
                         {
                             <li>@Html.ActionLink("Вход", "Login", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                            <li>@Html.ActionLink("Регистрация", "Register", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                         }
                     }
-                    <li>@Html.ActionLink("Регистрация", "Register", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                 </ul>
             </div>
         </div>
@@ -56,6 +56,11 @@
                     </button>
                     <a class="navbar-brand" style="color:ivory">Меню</a>
                 </div>
+                <style>
+                    li:hover {
+                        background-color:steelblue;
+                    }
+                </style>
                 <div class="navbar-collapse collapse" id="navbar-collapse-2">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Мои сообщения", "PersonalMessage", "Home", new { area = "" }, new { style = "color:ivory" })</li>
