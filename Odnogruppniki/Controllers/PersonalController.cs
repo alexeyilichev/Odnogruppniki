@@ -56,12 +56,14 @@ namespace Odnogruppniki.Controllers
         {
             var user = await GetCurrentUser();
             var personalInfo = await db.PersonalInfoes.FirstOrDefaultAsync(x => x.id_user == user.id);
+            ViewBag.Photo = personalInfo.photo;
             ViewBag.Name = personalInfo.name;
             ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x=> x.id == personalInfo.id_university)).name; //test data
             ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name; //test data
             ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ; //test data
             ViewBag.City = personalInfo.city; //test data
             ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name; //test data
+            ViewBag.AboutInfo = personalInfo.aboutinfo;
             return View();
         }
 
