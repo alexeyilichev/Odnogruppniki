@@ -41,41 +41,41 @@
                 }
             }
         }
-        
-        
+
+
     }
 </script>
 
-<h2>Register</h2>
-
-<div>
-    Login<br />
-    <input type="text" id="login" />
+<br /><br /><br />
+<div class="table" style="width:20%; margin-left:40%">
+    <div class="row">
+        <h4>Логин</h4>
+        <input type="text" name="login" id="login" />
+    </div>
+    <div class="row">
+        <h4>Пароль</h4>
+        <input type="password" id="pass" />
+    </div>
+    <div class="row">
+        <h4>Подтверждение</h4>
+        <input type="password" id="passConfirm" />
+    </div>
+    <div class="row">
+        <h4>Роль</h4>
+        <select id="roleSelect" style="width:68%">
+            <option disabled>Выберите роль...</option>
+            <option value="1">Admin</option>
+        </select>
+    </div>
+    <div class="row">
+        <h4>Группа</h4>
+        <select id="groupSelect" style="width:68%">
+            <option disabled>Выберите группу...</option>
+            <option value="1">PRI-116</option>
+        </select>
+    </div>
+    <div class="row center-block" style="margin-top:15px">
+        <br />
+        <input type="button" id="registerButton" onclick="reg()" value="Регистрация" style="width:48%; margin-left:9%" />
+    </div>
 </div>
-<div>
-    Password<br />
-    <input type="password" id="pass" />
-</div>
-<div>
-    Confirm password<br />
-    <input type="password" id="passConfirm" />
-</div>
-<div>
-    Role<br />
-    <select id="roleSelect">
-        <option disabled>Select a role</option>
-        <option value="1">Admin</option>
-    </select>
-</div>
-<div>
-    Group<br />
-    <select id="groupSelect">
-        <option disabled>Select a group</option>
-        <option value="1">PRI-116</option>
-    </select>
-</div>
-<div>
-    <br />
-    <input type="button" id="registerButton" onclick="reg()" value="reg"/>
-</div>
-

@@ -3,38 +3,74 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:cornflowerblue">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                    <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                @{
+                    var isUserAuth = User.Identity.IsAuthenticated;
+                }
+
+                @Html.ActionLink("Одногруппники", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "color:ivory" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Me", "PersonalInfo", "Personal")</li>
+                    <li>@Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                    <li>@Html.ActionLink("Моя страница", "About", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                    @{
+                        if (isUserAuth)
+                        {
+                            <li>@Html.ActionLink("Выход", "LogoutPage", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Вход", "Login", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                            <li>@Html.ActionLink("Регистрация", "Register", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content" style="width:100%">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        <div class="navbar navbar-inverse navbar-fixed-bottom" style="background-color:cornflowerblue">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="color:ivory">Меню</a>
+                </div>
+                <style>
+                    li:hover {
+                        background-color:steelblue;
+                    }
+                </style>
+                <div class="navbar-collapse collapse" id="navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Мои сообщения", "PersonalMessage", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Группы", "Groups", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Поиск", "Search", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                        <li>@Html.ActionLink("Настройки", "Settings", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

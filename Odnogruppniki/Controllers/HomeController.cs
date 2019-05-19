@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Odnogruppniki.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private DBContext _db;
@@ -48,19 +49,21 @@ namespace Odnogruppniki.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
             return View("Index");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Login()
         {
             return View("Login");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Login(string login, string password)
         {
@@ -95,19 +98,58 @@ namespace Odnogruppniki.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
+        
+        [HttpGet]
+        public ActionResult PersonalMessage()
+        {
+            return View("Index");
+        }
 
+        [HttpGet]
+        public ActionResult Groups()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Search()
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Settings()
+        {
+            return View("Index");
+        }
+        
+        [HttpGet]
+        public ActionResult LogoutPage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                HttpContext.GetOwinContext().Authentication.SignOut(
+                    new AuthenticationProperties { IsPersistent = false }, User.Identity.AuthenticationType);
+                return Json(new { Success = true });
+            } else
+            {
+                return Json(new { Success = false, Error = "User is not login!" });
+            }
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Register(string login, string password, int id_group, int id_role)
         {
