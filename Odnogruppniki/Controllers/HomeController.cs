@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Odnogruppniki.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private DBContext _db;
@@ -48,19 +49,21 @@ namespace Odnogruppniki.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
             return View("Index");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Login()
         {
             return View("Login");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Login(string login, string password)
         {
@@ -95,12 +98,13 @@ namespace Odnogruppniki.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
-
+        
         [HttpGet]
         public ActionResult PersonalMessage()
         {
@@ -124,7 +128,7 @@ namespace Odnogruppniki.Controllers
         {
             return View("Index");
         }
-
+        
         [HttpGet]
         public ActionResult LogoutPage()
         {
@@ -145,6 +149,7 @@ namespace Odnogruppniki.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Register(string login, string password, int id_group, int id_role)
         {
