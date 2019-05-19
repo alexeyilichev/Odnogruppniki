@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Мои сообщения";
+}
+@{ 
+    var messages = ViewBag.Messages;
+}
+
+<div class="center-block" style="width:80%; padding-top:5%">
+    @{
+        if (messages.Count == 0)
+        {
+            <div>
+                <h2>У вас нет сообщений</h2>
+            </div>
+        }
+        else
+        {
+            foreach (var message in messages)
+            {
+                <div style="display:block; background-color:gainsboro; border-radius:6px; height:100px">
+                    <div class="pull-left col-sm-5" style="margin-right:35px; width:10%; height:inherit; font-size:inherit; padding-top:30px">
+                        <b>@message.name_out</b>
+                    </div>
+                    <div class="col-sm-10" style="width:inherit; font-size:inherit; height:inherit; padding-top:30px">
+                        @message.message
+                    </div>
+                    <div class="pull-right" style="margin-left:3%; margin-right:5%; width:5%; height:inherit">
+                        @message.dateString
+                    </div>
+                </div>
+                <br />
+            }
+        }
+    }
+</div>
+

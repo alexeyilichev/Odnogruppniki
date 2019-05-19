@@ -104,12 +104,6 @@ namespace Odnogruppniki.Controllers
         {
             return View();
         }
-        
-        [HttpGet]
-        public ActionResult PersonalMessage()
-        {
-            return View("Index");
-        }
 
         [HttpGet]
         public ActionResult Groups()
