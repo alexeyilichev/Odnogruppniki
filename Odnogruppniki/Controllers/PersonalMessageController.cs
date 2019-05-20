@@ -48,7 +48,7 @@ namespace Odnogruppniki.Controllers
             }
         }
 
-        // GET: PersonalMessage
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUser();
@@ -149,15 +149,18 @@ namespace Odnogruppniki.Controllers
         public async Task SendMessage(int id_out, string message)
         {
             var user = await GetCurrentUser();
-            var newMessage = new PersonalMessage
+            if(user.id != id_out)
             {
-                id_in = id_out,
-                id_out = user.id,
-                message = message,
-                date = DateTime.Now
-            };
-            db.PersonalMessages.Add(newMessage);
-            await db.SaveChangesAsync();
+                var newMessage = new PersonalMessage
+                {
+                    id_in = id_out,
+                    id_out = user.id,
+                    message = message,
+                    date = DateTime.Now
+                };
+                db.PersonalMessages.Add(newMessage);
+                await db.SaveChangesAsync();
+            }
         }
 
         private string GetCurrentUserName()
