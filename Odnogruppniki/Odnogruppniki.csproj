@@ -236,6 +236,7 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\LogoutPage.cshtml" />
     <Content Include="Views\PersonalMessage\Index.cshtml" />
+    <Content Include="Views\PersonalMessage\PersonalMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

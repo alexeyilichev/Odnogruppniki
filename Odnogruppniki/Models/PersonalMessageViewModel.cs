@@ -7,6 +7,7 @@ namespace Odnogruppniki.Models
 {
     public class PersonalMessageViewModel
     {
+        public int id { get; set; }
         public int id_in { get; set; }
         public string name_in { get; set; }
         //public string photo_in { get; set; }
