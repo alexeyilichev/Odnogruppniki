@@ -11,6 +11,7 @@ namespace Odnogruppniki.Models.DBModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            PersonalInfoes = new HashSet<PersonalInfo>();
             PersonalMessages = new HashSet<PersonalMessage>();
             PersonalMessages1 = new HashSet<PersonalMessage>();
         }
@@ -29,6 +30,9 @@ namespace Odnogruppniki.Models.DBModels
         public int? id_group { get; set; }
 
         public virtual Group Group { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonalInfo> PersonalInfoes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonalMessage> PersonalMessages { get; set; }
