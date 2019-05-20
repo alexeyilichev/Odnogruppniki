@@ -91,24 +91,11 @@ namespace Odnogruppniki.Controllers
             }
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-            ViewBag.User = GetCurrentUserName();
-            return View();
-        }
-
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Register()
         {
             return View();
-        }
-        
-        [HttpGet]
-        public ActionResult PersonalMessage()
-        {
-            return View("Index");
         }
 
         [HttpGet]
@@ -118,9 +105,10 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search()
+        public async Task<ActionResult> Search()
         {
-            return View("Index");
+            ViewBag.Users = await db.Users.ToListAsync();
+            return View("Search");
         }
 
         [HttpGet]
