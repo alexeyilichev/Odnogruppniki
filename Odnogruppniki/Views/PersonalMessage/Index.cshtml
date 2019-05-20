@@ -6,7 +6,25 @@
     var messages = ViewBag.Messages;
 }
 
-<div class="center-block" style="width:80%; padding-top:5%">
+<script>
+    function openMessage(id) {
+        window.location = '@Url.Action("OpenMessage","PersonalMessage")' + '?id=' + id;
+    }
+    function openMessages(par) {
+        window.location = '@Url.Action("OpenMessages","PersonalMessage")' + '?par=' + par;
+    }
+</script>
+
+<div style="width:80%; margin-left:10%; margin-right:10%; padding-top:5%; margin-bottom:2%">
+    <button type="button" style="background-color:steelblue; border-radius:20px; width:40px">
+        <span class="glyphicon glyphicon-arrow-up" onclick="openMessages(1)"></span>
+    </button>
+    <button type="button" style="background-color:steelblue; border-radius:20px; width:40px">
+        <span class="glyphicon glyphicon-arrow-down" onclick="openMessages(2)"></span>
+    </button>
+</div>
+
+<div class="center-block" style="width:80%">
     @{
         if (messages.Count == 0)
         {
@@ -18,7 +36,7 @@
         {
             foreach (var message in messages)
             {
-                <div style="display:block; background-color:gainsboro; border-radius:6px; height:100px">
+                <div style="display:block; background-color:gainsboro; border-radius:6px; height:100px" onclick="openMessage(@message.id)">
                     <div class="pull-left col-sm-5" style="margin-right:35px; width:10%; height:inherit; font-size:inherit; padding-top:30px">
                         <b>@message.name_out</b>
                     </div>
