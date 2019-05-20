@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Odnogruppniki.Controllers
 {
+    [Authorize]
     public class PersonalController : Controller
     {
 
@@ -52,17 +53,24 @@ namespace Odnogruppniki.Controllers
             return View();
         }
 
-        public async Task<ActionResult> PersonalInfo()
+        public async Task<ActionResult> PersonalInfo(int? id)
         {
             var user = await GetCurrentUser();
-            var personalInfo = await db.PersonalInfoes.FirstOrDefaultAsync(x => x.id_user == user.id);
+            var personalInfo = new PersonalInfo();
+            if (!id.HasValue)
+            {
+                personalInfo = await db.PersonalInfoes.FirstOrDefaultAsync(x => x.id_user == user.id);
+            } else
+            {
+                personalInfo = await db.PersonalInfoes.FirstOrDefaultAsync(x => x.id_user == id);
+            }
             ViewBag.Photo = personalInfo.photo;
             ViewBag.Name = personalInfo.name;
-            ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x=> x.id == personalInfo.id_university)).name; //test data
-            ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name; //test data
-            ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ; //test data
-            ViewBag.City = personalInfo.city; //test data
-            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name; //test data
+            ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x=> x.id == personalInfo.id_university)).name;
+            ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name;
+            ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ;
+            ViewBag.City = personalInfo.city;
+            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name;
             ViewBag.AboutInfo = personalInfo.aboutinfo;
             return View();
         }
