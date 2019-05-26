@@ -246,6 +246,7 @@
     <Content Include="Views\PersonalMessage\Index.cshtml" />
     <Content Include="Views\PersonalMessage\PersonalMessage.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Personal\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
