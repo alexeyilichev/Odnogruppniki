@@ -3,7 +3,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Odnogruppniki.Core;
+using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -19,7 +21,7 @@ namespace Odnogruppniki.Controllers
         private DBContext _db;
         private UserManager _um;
 
-        public HomeController(){}
+        public HomeController() { }
         public HomeController(DBContext db, UserManager userManager)
         {
             _db = db;
@@ -120,7 +122,32 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> Search()
         {
-            ViewBag.Users = await db.Users.ToListAsync();
+            var searchItems = await (from user in db.Users
+                                     join person in db.PersonalInfoes
+                                     on user.id equals person.id_user
+                                     join univer in db.Universities
+                                     on person.id_university equals univer.id
+                                     join faculty in db.Faculties
+                                     on person.id_faculty equals faculty.id
+                                     join department in db.Departments
+                                     on person.id_department equals department.id
+                                     join grup in db.Groups
+                                     on person.id_group equals grup.id
+                                     select new SearchUserViewModel
+                                     {
+                                         id_user = user.id,
+                                         photo = person.photo,
+                                         name = person.name,
+                                         id_university = person.id_university,
+                                         university = univer.name,
+                                         id_faculty = person.id_faculty,
+                                         faculty = faculty.name,
+                                         id_department = person.id_department,
+                                         department = department.name,
+                                         id_group = person.id_group,
+                                         @group = grup.name
+                                     }).ToListAsync();
+            ViewBag.SearchUsers = searchItems;
             return View("Search");
         }
 
@@ -180,5 +207,7 @@ namespace Odnogruppniki.Controllers
             var name = GetCurrentUserName();
             return await db.Users.FirstOrDefaultAsync(x => x.login == name);
         }
+
+
     }
 }
