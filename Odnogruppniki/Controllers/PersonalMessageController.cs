@@ -58,6 +58,10 @@ namespace Odnogruppniki.Controllers
                             on message.id_in equals user_in.id
                             join user_out in db.Users
                             on message.id_out equals user_out.id
+                            join person_in in db.PersonalInfoes
+                            on user_in.id equals person_in.id_user
+                            join person_out in db.PersonalInfoes
+                            on user_out.id equals person_out.id_user
                             where message.id_in == user.id || message.id_out == user.id
                             select new PersonalMessageViewModel
                             {
@@ -65,8 +69,10 @@ namespace Odnogruppniki.Controllers
                                 id_in = message.id_in,
                                 id_out = message.id_out,
                                 message = message.message,
-                                name_in = user_in.login,
-                                name_out = user_out.login,
+                                name_in = person_in.name,
+                                name_out = person_out.name,
+                                photo_in = person_in.photo,
+                                photo_out = person_out.photo,
                                 date = message.date
                             }).OrderByDescending(x => x.date).ToListAsync();
             messages.ForEach(x => x.dateString = date >= x.date ? string.Format("{0:dd/MM/yy}", x.date) : string.Format("{0:HH:mm:ss}", x.date));
@@ -83,21 +89,27 @@ namespace Odnogruppniki.Controllers
             if (par == 1)
             {
                 messages.AddRange(await (from message in db.PersonalMessages
-                                      join user_in in db.Users
-                                      on message.id_in equals user_in.id
-                                      join user_out in db.Users
-                                      on message.id_out equals user_out.id
-                                      where message.id_out == user.id
-                                      select new PersonalMessageViewModel
-                                      {
-                                          id = message.id,
-                                          id_in = message.id_in,
-                                          id_out = message.id_out,
-                                          message = message.message,
-                                          name_in = user_in.login,
-                                          name_out = user_out.login,
-                                          date = message.date
-                                      }).OrderByDescending(x => x.date).ToListAsync());
+                                         join user_in in db.Users
+                                         on message.id_in equals user_in.id
+                                         join user_out in db.Users
+                                         on message.id_out equals user_out.id
+                                         join person_in in db.PersonalInfoes
+                                         on user_in.id equals person_in.id_user
+                                         join person_out in db.PersonalInfoes
+                                         on user_out.id equals person_out.id_user
+                                         where message.id_out == user.id
+                                         select new PersonalMessageViewModel
+                                         {
+                                             id = message.id,
+                                             id_in = message.id_in,
+                                             id_out = message.id_out,
+                                             message = message.message,
+                                             name_in = person_in.name,
+                                             name_out = person_out.name,
+                                             photo_in = person_in.photo,
+                                             photo_out = person_out.photo,
+                                             date = message.date
+                                         }).OrderByDescending(x => x.date).ToListAsync());
             } else
             {
                 messages.AddRange(await (from message in db.PersonalMessages
@@ -105,6 +117,10 @@ namespace Odnogruppniki.Controllers
                                          on message.id_in equals user_in.id
                                          join user_out in db.Users
                                          on message.id_out equals user_out.id
+                                         join person_in in db.PersonalInfoes
+                                         on user_in.id equals person_in.id_user
+                                         join person_out in db.PersonalInfoes
+                                         on user_out.id equals person_out.id_user
                                          where message.id_in == user.id
                                          select new PersonalMessageViewModel
                                          {
@@ -112,8 +128,10 @@ namespace Odnogruppniki.Controllers
                                              id_in = message.id_in,
                                              id_out = message.id_out,
                                              message = message.message,
-                                             name_in = user_in.login,
-                                             name_out = user_out.login,
+                                             name_in = person_in.name,
+                                             name_out = person_out.name,
+                                             photo_in = person_in.photo,
+                                             photo_out = person_out.photo,
                                              date = message.date
                                          }).OrderByDescending(x => x.date).ToListAsync());
             }
@@ -126,22 +144,33 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> OpenMessage(int id)
         {
             var model = await (from message in db.PersonalMessages
-                               join usr_in in db.Users
-                               on message.id_in equals usr_in.id
-                               join usr_out in db.Users
-                               on message.id_out equals usr_out.id
+                               join user_in in db.Users
+                               on message.id_in equals user_in.id
+                               join user_out in db.Users
+                               on message.id_out equals user_out.id
+                               join person_in in db.PersonalInfoes
+                               on user_in.id equals person_in.id_user
+                               join person_out in db.PersonalInfoes
+                               on user_out.id equals person_out.id_user
                                where message.id == id
                                select new PersonalMessageViewModel
                                {
-                                   date = message.date,
+                                   id = message.id,
                                    id_in = message.id_in,
                                    id_out = message.id_out,
                                    message = message.message,
-                                   name_in = usr_in.login,
-                                   name_out = usr_out.login
+                                   name_in = person_in.name,
+                                   name_out = person_out.name,
+                                   photo_in = person_in.photo,
+                                   photo_out = person_out.photo,
+                                   date = message.date
                                }).FirstOrDefaultAsync();
             model.dateString = string.Format("{0:dd/MM/yy HH:mm:ss}", model.date);
             ViewBag.Message = model;
+            var userName = GetCurrentUserName();
+            ViewBag.User = await (from user in db.Users.Where(x => x.login == userName)
+                           join person in db.PersonalInfoes on user.id equals person.id_user
+                           select person.name).FirstOrDefaultAsync();
             return View("PersonalMessage");
         }
 
@@ -156,7 +185,7 @@ namespace Odnogruppniki.Controllers
                     id_in = id_out,
                     id_out = user.id,
                     message = message,
-                    date = DateTime.Now
+                    date = DateTime.UtcNow
                 };
                 db.PersonalMessages.Add(newMessage);
                 await db.SaveChangesAsync();

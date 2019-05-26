@@ -84,7 +84,7 @@ namespace Odnogruppniki.Controllers
 
                 HttpContext.GetOwinContext().Authentication.SignIn(
                    new AuthenticationProperties { IsPersistent = false }, ident);
-                return Json(new { Success = true }); // auth succeed 
+                return Json(new { Success = true });
             } else
             {
                 return Json(new { Success = false, Error = "Login or password are incorrect!" });
@@ -102,6 +102,19 @@ namespace Odnogruppniki.Controllers
         public ActionResult Groups()
         {
             return View("Index");
+        }
+
+        [HttpPost]
+        public async Task SaveInfo(string photo, string aboutInfo)
+        {
+            var usr = await GetCurrentUser();
+            var info = (await (from user in db.Users
+                               where user.id == usr.id
+                               join person in db.PersonalInfoes on user.id equals person.id_user
+                               select person).FirstOrDefaultAsync());
+            info.photo = photo;
+            info.aboutinfo = aboutInfo;
+            await db.SaveChangesAsync();
         }
 
         [HttpGet]

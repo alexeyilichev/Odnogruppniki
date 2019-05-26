@@ -75,6 +75,22 @@ namespace Odnogruppniki.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Edit()
+        {
+            ViewBag.UserId = (await GetCurrentUser()).id;
+            ViewBag.Universities = await db.Universities.ToListAsync();
+            ViewBag.Faculties = await db.Faculties.ToListAsync();
+            ViewBag.Departments = await db.Departments.ToListAsync();
+            ViewBag.Groups = await db.Groups.ToListAsync();
+            var user = await GetCurrentUser();
+            ViewBag.User = (await (from usr in db.Users
+                                   join person in db.PersonalInfoes on usr.id equals person.id_user
+                                   where usr.id == user.id
+                                   select person).FirstOrDefaultAsync());
+            return View();
+        }
+
         private string GetCurrentUserName()
         {
             return HttpContext.GetOwinContext().Authentication.User.Identity.Name;
