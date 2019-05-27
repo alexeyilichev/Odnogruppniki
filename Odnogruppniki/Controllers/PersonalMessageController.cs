@@ -171,6 +171,7 @@ namespace Odnogruppniki.Controllers
             ViewBag.User = await (from user in db.Users.Where(x => x.login == userName)
                            join person in db.PersonalInfoes on user.id equals person.id_user
                            select person.name).FirstOrDefaultAsync();
+            ViewBag.IsAnswer = true;
             return View("PersonalMessage");
         }
 
@@ -190,6 +191,14 @@ namespace Odnogruppniki.Controllers
                 db.PersonalMessages.Add(newMessage);
                 await db.SaveChangesAsync();
             }
+        }
+
+        [HttpGet]
+        public ActionResult NewMessage(int id)
+        {
+            ViewBag.IsAnswer = false;
+            ViewBag.Message = new PersonalMessageViewModel { id_out = id, name_out = "Other user" };
+            return View("PersonalMessage");
         }
 
         private string GetCurrentUserName()

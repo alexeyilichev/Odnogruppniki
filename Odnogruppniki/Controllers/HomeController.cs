@@ -152,6 +152,25 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> OpenProfile(int id)
+        {
+            var personalInfo = (await (from person in db.PersonalInfoes
+                               where person.id_user == id
+                               select person).FirstOrDefaultAsync());
+            ViewBag.Photo = personalInfo.photo;
+            ViewBag.Name = personalInfo.name;
+            ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x => x.id == personalInfo.id_university)).name;
+            ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name;
+            ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ;
+            ViewBag.City = personalInfo.city;
+            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name;
+            ViewBag.AboutInfo = personalInfo.aboutinfo;
+            ViewBag.UserId = id;
+            ViewBag.MyPage = false;
+            return View("/Views/Personal/PersonalInfo.cshtml");
+        }
+
+        [HttpGet]
         public ActionResult Settings()
         {
             return View("Index");
