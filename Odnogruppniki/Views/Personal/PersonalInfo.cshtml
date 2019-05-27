@@ -3,49 +3,64 @@
     ViewBag.Title = "Моя страница";
 }
 <br /><br />
-<div>
-    <div style="overflow: hidden;">
-        <div style="width: 1000%;">
-            <div style="display:block;float: left">
-                <img src="@ViewBag.Photo" alt="Здесь должна быть картинка" height="300" width="300" style="border:double; color:cornflowerblue; border-radius:100px ">
-            </div>
-            <div class="col-md-3" style="float: left">
-                <h4>О себе</h4>
-                <div class="jumbotron" style="height:250px">
-                    @ViewBag.AboutInfo
-                </div>
-            </div>
-        </div>
-    </div>
-    <div style = "width:300px; height:30px">
-        @Html.ActionLink("Редактировать", "Edit", "Personal", new { area = "" }, new { style = "height:inherit; margin-left:100px; width:100px; border-radius:5px; background-color:cornflowerblue; color:ivory" })
-    </div>
-    <table class="table" style="width:300px; border:double;border-color:cornflowerblue;float: left">
-        <tbody>
-            <tr>
-                <td style="background-color:cornflowerblue">Имя:</td>
-                <td style="background-color:cornflowerblue">@ViewBag.Name</td>
-            </tr>
-            <tr>
-                <td>Университет:</td>
-                <td>@ViewBag.University</td>
-            </tr>
-            <tr>
-                <td style="background-color:cornflowerblue">Институт:</td>
-                <td style="background-color:cornflowerblue">@ViewBag.Faculty</td>
-            </tr>
-            <tr>
-                <td>Кафедра:</td>
-                <td>@ViewBag.Department</td>
-            </tr>
-            <tr>
-                <td style="background-color:cornflowerblue">Город:</td>
-                <td style="background-color:cornflowerblue">@ViewBag.City</td>
-            </tr>
-            <tr>
-                <td>Роль:</td>
-                <td>@ViewBag.Role</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<script>
+    function newMessage() {
+        window.location = '@Url.Action("NewMessage", "PersonalMessage")'+'?id='+@ViewBag.UserId;
+    }
+</script>
+      <div>
+          <div style="overflow: hidden;">
+              <div style="width: 1000%;">
+                  <div style="display:block;float: left">
+                      <img src="@ViewBag.Photo" alt="Здесь должна быть картинка" height="300" width="300" style="border:double; color:cornflowerblue; border-radius:100px ">
+                  </div>
+                  <div class="col-md-3" style="float: left">
+                      <h4>О себе</h4>
+                      <div class="jumbotron" style="height:250px">
+                          @ViewBag.AboutInfo
+                      </div>
+                  </div>
+              </div>
+          </div>
+          @if (ViewBag.MyPage)
+          {
+              <div style="width:300px; height:30px">
+                  @Html.ActionLink("Редактировать", "Edit", "Personal", new { area = "" }, new { style = "height:inherit; margin-left:100px; width:100px; border-radius:5px; background-color:cornflowerblue; color:ivory" })
+              </div>
+          }
+          else
+          {
+              <div style="width:300px; height:30px">
+                  <button type="button" style = "height:inherit; margin-left:100px; width:100px; border-radius:5px; background-color:cornflowerblue; color:ivory" onclick="newMessage()">Написать</button>
+              </div>
+          }
+
+          <table class="table" style="width:300px; border:double;border-color:cornflowerblue;float: left">
+              <tbody>
+                  <tr>
+                      <td style="background-color:cornflowerblue">Имя:</td>
+                      <td style="background-color:cornflowerblue">@ViewBag.Name</td>
+                  </tr>
+                  <tr>
+                      <td>Университет:</td>
+                      <td>@ViewBag.University</td>
+                  </tr>
+                  <tr>
+                      <td style="background-color:cornflowerblue">Институт:</td>
+                      <td style="background-color:cornflowerblue">@ViewBag.Faculty</td>
+                  </tr>
+                  <tr>
+                      <td>Кафедра:</td>
+                      <td>@ViewBag.Department</td>
+                  </tr>
+                  <tr>
+                      <td style="background-color:cornflowerblue">Город:</td>
+                      <td style="background-color:cornflowerblue">@ViewBag.City</td>
+                  </tr>
+                  <tr>
+                      <td>Роль:</td>
+                      <td>@ViewBag.Role</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
