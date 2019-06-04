@@ -33,6 +33,12 @@ namespace Odnogruppniki.Models.DBModels
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Department>()
+                .HasMany(e => e.Groups)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.id_department)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Department>()
                 .HasMany(e => e.PersonalInfoes)
                 .WithRequired(e => e.Department)
                 .HasForeignKey(e => e.id_department)

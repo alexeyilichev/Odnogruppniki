@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Групповые сообщения";
+    var message = ViewBag.Message;
+    var user = ViewBag.User;
+}
+
+<div class="row" style="padding-left:5%; padding-right:5%; width:80%; margin-left:10%">
+    <br />
+    <div class="pull-left">
+        from <b>@message.name</b>
+    </div>
+    <div class="pull-right">
+        @message.dateString
+    </div>
+</div>
+<div class="jumbotron" style="margin-left:10%; margin-right:10%; padding-left: 10%; padding-right:10%">
+    @message.message
+</div>
+
+
+
+
+

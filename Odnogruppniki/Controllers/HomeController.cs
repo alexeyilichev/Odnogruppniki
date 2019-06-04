@@ -152,6 +152,27 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> SearchGroup()
+        {
+            var searchItems = await (from department in db.Departments
+                                     join grup in db.Groups
+                                     on department.id equals grup.id_department
+                                     join faculty in db.Faculties
+                                     on department.id_faculty equals faculty.id
+                                     select new SearchGroupsViewModel
+                                     {
+                                         id_group = grup.id,
+                                         name = grup.name,
+                                         id_faculty = department.id_faculty,
+                                         faculty = faculty.name,
+                                         id_department = grup.id_department,
+                                         department = department.name,
+                                     }).ToListAsync();
+            ViewBag.SearchGroups = searchItems;
+            return View("SearchGroup");
+        }
+
+        [HttpGet]
         public ActionResult Settings()
         {
             return View("Index");
