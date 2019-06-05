@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TLSharp.Core;
 
 namespace Odnogruppniki.Controllers
 {
@@ -50,10 +52,17 @@ namespace Odnogruppniki.Controllers
                 _um = value;
             }
         }
+        
+        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new SessionStoreFake());
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            await client.ConnectAsync();
+            var phone = "+79157566365";
+            var hash = await client.SendCodeRequestAsync(phone);
+            var code = await client.MakeAuthAsync(phone, hash, "12345");
+            
             ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
             return View("Index");
         }
@@ -173,7 +182,7 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public ActionResult Settings()
         {
-            return View("Index");
+            return View("Settings");
         }
         
         [HttpGet]
