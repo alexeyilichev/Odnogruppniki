@@ -14,33 +14,38 @@
     function addClient() {
         alert($("#code").val());
     }
-    
+
 </script>
 
-<div style="width:80%; margin-left:10%; margin-right:10%">
-    <div style="width:inherit; height:70px">
-        <div style="margin-top:10px; margin-bottom:10px">
-            <span class="glyphicon glyphicon-phone pull-left"></span><h5>Введите номер телефона для уведомлений</h5>
+@if (ViewBag.RoleName == "Admin")
+{
+    <div style="width:80%; margin-left:10%; margin-right:10%">
+        <div style="width:inherit; height:70px">
+            <div style="margin-top:10px; margin-bottom:10px">
+                <span class="glyphicon glyphicon-phone pull-left"></span><h5>Введите номер телефона для уведомлений</h5>
+            </div>
+            <div style="height:50px; margin-top:10px; margin-bottom:10px">
+                <input type="tel" class="jumbotron" id="phone" style="width:50%; height:30px; max-height:50px; max-width:100%; font-size:xx-large" /><button type="button" onclick="sendCode()" style="height:50px; max-height:100%; width:100px; max-width:100%"><span class="glyphicon glyphicon-send"></span></button>
+            </div>
         </div>
-        <div style="height:50px; margin-top:10px; margin-bottom:10px">
-            <input type="tel" class="jumbotron" id="phone" style="width:50%; height:30px; max-height:50px; max-width:100%; font-size:xx-large" /><button type="button" onclick="sendCode()" style="height:50px; max-height:100%; width:100px; max-width:100%"><span class="glyphicon glyphicon-send"></span></button>
+        <div style="width:inherit; height:70px; display:none" id="codeField">
+            <br /><br /><br />
+            <div style="margin-top:10px; margin-bottom:10px">
+                <span class="glyphicon glyphicon-info-sign pull-left"></span><h5>Введите полученный код</h5>
+            </div>
+            <div style="height:50px; margin-top:10px; margin-bottom:10px">
+                <input type="text" class="jumbotron" id="code" style="width:50%; height:30px; max-height:50px; max-width:100%; font-size:xx-large" /><button type="button" onclick="addClient()" style="height:100px; max-height:100%; width:100px; max-width:100%"><span class="glyphicon glyphicon-arrow-up"></span></button>
+            </div>
         </div>
+
     </div>
-    <div style="width:inherit; height:70px; display:none" id="codeField">
-        <br /><br /><br />
-        <div style="margin-top:10px; margin-bottom:10px">
-            <span class="glyphicon glyphicon-info-sign pull-left"></span><h5>Введите полученный код</h5>
-        </div>
-        <div style="height:50px; margin-top:10px; margin-bottom:10px">
-            <input type="text" class="jumbotron" id="code" style="width:50%; height:30px; max-height:50px; max-width:100%; font-size:xx-large" /><button type="button" onclick="addClient()" style="height:100px; max-height:100%; width:100px; max-width:100%"><span class="glyphicon glyphicon-arrow-up"></span></button>
-        </div>
-    </div>
-    
-</div>
-<script>
-    jQuery(function ($) {
-        $("#phone").mask("8(999)-999-99-99");
-        $("#code").mask("9999");
-    });
-</script>
+    <script>
+        jQuery(function ($) {
+            $("#phone").mask("8(999)-999-99-99");
+            $("#code").mask("9999");
+        });
+    </script>
+}
+
+
 

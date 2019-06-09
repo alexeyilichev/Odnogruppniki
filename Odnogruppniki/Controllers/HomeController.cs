@@ -5,6 +5,7 @@ using Microsoft.Owin.Security;
 using Odnogruppniki.Core;
 using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TeleSharp.TL;
 using TLSharp.Core;
 
 namespace Odnogruppniki.Controllers
@@ -54,17 +56,47 @@ namespace Odnogruppniki.Controllers
         }
         
         public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new SessionStoreFake());
+        public static string hash = "";
+        public TLUser user;
+        public const string phone = "+79157566365";
 
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
+            await Connect();
+            if (!client.IsUserAuthorized())
+            {
+                return await GetCode();
+            } else
+            {
+                ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
+                return View("Index");
+            }
+        }
+
+        private async Task Connect()
+        {
             await client.ConnectAsync();
-            var phone = "+79157566365";
-            var hash = await client.SendCodeRequestAsync(phone);
-            var code = await client.MakeAuthAsync(phone, hash, "12345");
-            
-            ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
-            return View("Index");
+        }
+
+        private async Task<ActionResult> GetCode()
+        {
+            hash = await client.SendCodeRequestAsync(phone);
+            return View("GetCode");
+        }
+
+        public async Task<ActionResult> MakeAuth(string code)
+        {
+            try
+            {
+                user = await client.MakeAuthAsync(phone, hash, code);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return await Index();
         }
 
         [AllowAnonymous]
@@ -166,6 +198,12 @@ namespace Odnogruppniki.Controllers
             var personalInfo = (await (from person in db.PersonalInfoes
                                where person.id_user == id
                                select person).FirstOrDefaultAsync());
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.Photo = personalInfo.photo;
             ViewBag.Name = personalInfo.name;
             ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x => x.id == personalInfo.id_university)).name;
@@ -182,6 +220,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public ActionResult Settings()
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             return View("Settings");
         }
         

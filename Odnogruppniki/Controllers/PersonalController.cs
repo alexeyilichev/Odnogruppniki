@@ -64,6 +64,12 @@ namespace Odnogruppniki.Controllers
             {
                 personalInfo = await db.PersonalInfoes.FirstOrDefaultAsync(x => x.id_user == id);
             }
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.Photo = personalInfo.photo;
             ViewBag.Name = personalInfo.name;
             ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x=> x.id == personalInfo.id_university)).name;
@@ -80,6 +86,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit()
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.UserId = (await GetCurrentUser()).id;
             ViewBag.Universities = await db.Universities.ToListAsync();
             ViewBag.Faculties = await db.Faculties.ToListAsync();

@@ -51,6 +51,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             var user = await GetCurrentUser();
             var date = DateTime.Now.AddDays(-1);
             var messages = await (from message in db.PersonalMessages
@@ -83,6 +89,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> OpenMessages(int par)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             var user = await GetCurrentUser();
             var date = DateTime.Now.AddDays(-1);
             var messages = new List<PersonalMessageViewModel>();
@@ -143,6 +155,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> OpenMessage(int id)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             var model = await (from message in db.PersonalMessages
                                join user_in in db.Users
                                on message.id_in equals user_in.id
@@ -178,6 +196,12 @@ namespace Odnogruppniki.Controllers
         [HttpPost]
         public async Task SendMessage(int id_out, string message)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             var user = await GetCurrentUser();
             if(user.id != id_out)
             {
@@ -196,6 +220,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public ActionResult NewMessage(int id)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.IsAnswer = false;
             ViewBag.Message = new PersonalMessageViewModel { id_out = id, name_out = "Other user" };
             return View("PersonalMessage");
