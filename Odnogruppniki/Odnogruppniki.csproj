@@ -196,6 +196,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\GroupMessageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\PersonalMessageController.cs" />
@@ -218,9 +219,11 @@
     <Compile Include="Models\DBModels\sysdiagram.cs" />
     <Compile Include="Models\DBModels\University.cs" />
     <Compile Include="Models\DBModels\User.cs" />
+    <Compile Include="Models\GroupMessageViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PersonalMessageViewModel.cs" />
+    <Compile Include="Models\SearchGroupsViewModel.cs" />
     <Compile Include="Models\SearchUserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -274,6 +277,9 @@
     <Content Include="Views\Personal\Edit.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\GetCode.cshtml" />
+    <Content Include="Views\Home\SearchGroup.cshtml" />
+    <Content Include="Views\GroupMessage\Index.cshtml" />
+    <Content Include="Views\GroupMessage\GroupMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
