@@ -12,6 +12,7 @@ namespace Odnogruppniki.Models.DBModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Department()
         {
+            Groups = new HashSet<Group>();
             PersonalInfoes = new HashSet<PersonalInfo>();
         }
 
@@ -28,6 +29,9 @@ namespace Odnogruppniki.Models.DBModels
         public virtual Faculty Faculty { get; set; }
 
         public virtual University University { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Group> Groups { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonalInfo> PersonalInfoes { get; set; }

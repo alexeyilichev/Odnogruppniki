@@ -34,6 +34,9 @@ namespace Odnogruppniki.Models.DBModels
 
         public string photo { get; set; }
 
+        [StringLength(20)]
+        public string phone { get; set; }
+
         public virtual Department Department { get; set; }
 
         public virtual Faculty Faculty { get; set; }
