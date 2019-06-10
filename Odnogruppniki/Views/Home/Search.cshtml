@@ -58,4 +58,8 @@
     $('#input').keyup(function () {
         table_search($('#input').val(), $('#table tbody tr'), '012');
     });
+
+    function openProfile(id) {
+        window.location = '@Url.Action("OpenProfile", "Home")' + '?id=' + id;
+    }
 </script>

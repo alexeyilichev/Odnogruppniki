@@ -2,8 +2,119 @@
     ViewBag.Title = "Главная";
 }
 
-<script type="text/javascript">
+@{ 
+    var faculties = ViewBag.Faculties;
+    var departments = ViewBag.Departments;
+}
 
+<script type="text/javascript">
+    function facadd() {
+        var name = $("#facultyadd").val();
+        var data = {
+            'name': name
+        };
+        if (name == "") {
+            alert('Type a name!');
+        } else {
+                        $.ajax({
+                            url: '@Url.Action("AddFaculty", "Home")',
+                            type: 'POST',
+                            data: data,
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.Success) {
+                                    window.location = '@Url.Action("index", "Home")';
+                                } else {
+                                    alert(data.Error);
+                                }
+                            }
+                        });
+                    }
+    }
+
+    function depadd() {
+        var name = $("#departmentadd").val();
+        var faculty = document.getElementById("facultySelect");
+        var id_faculty = faculty.selectedOptions[0].value;
+        var data = {
+            'name': name,
+            'id_faculty': id_faculty
+        };
+        if (name == "") {
+            alert('Type a name!');
+        } else {
+                        $.ajax({
+                            url: '@Url.Action("AddDepartment", "Home")',
+                            type: 'POST',
+                            data: data,
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.Success) {
+                                    window.location = '@Url.Action("index", "Home")';
+                                } else {
+                                    alert(data.Error);
+                                }
+                            }
+                        });
+                    }
+    }
+
+    function groupadd() {
+        var name = $("#groupadd").val();
+        var department = document.getElementById("departmentSelect");
+        var id_department = department.selectedOptions[0].value;
+        var data = {
+            'name': name,
+            'id_department': id_department
+        };
+        if (name == "") {
+            alert('Type a name!');
+        } else {
+                        $.ajax({
+                            url: '@Url.Action("AddGroup", "Home")',
+                            type: 'POST',
+                            data: data,
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.Success) {
+                                    window.location = '@Url.Action("index", "Home")';
+                                } else {
+                                    alert(data.Error);
+                                }
+                            }
+                        });
+                    }
+                }
 </script>
 
-<div><h1><b>@ViewBag.UserName</b></h1></div>
+<div class="row">
+    <h4>Добавление института</h4>
+    <input type="text" name="facultyadd" id="facultyadd" />
+    <input type="button" id="facultyButton" onclick="facadd()" value="Добавить институт" style="width:200px; margin-left:22.2%" />
+</div>
+<div class="row">
+    <h4>Добавление кафедры</h4>
+    <input type="text" name="departmentadd" id="departmentadd" />
+        <select id="facultySelect" style="width:200px; height:25px">
+            <option selected>Выберите институт...</option>
+            @{ foreach (var faculty in faculties)
+                {
+                    <option value="@faculty.id">@faculty.name</option>
+                }
+            }
+        </select>
+    <input type="button" id="departmentButton" onclick="depadd()" value="Добавить кафедру" style="width:200px; margin-left:9%" />
+</div>
+<div class="row">
+    <h4>Добавление группы</h4>
+    <input type="text" name="groupadd" id="groupadd" />
+        <select id="departmentSelect" style="width:200px; height:25px">
+            <option selected>Выберите кафедру...</option>
+            @{ foreach (var department in departments)
+                {
+                    <option value="@department.id">@department.name</option>
+                }
+            }
+        </select>
+    <input type="button" id="groupButton" onclick="groupadd()" value="Добавить группу" style="width:200px; margin-left:9%" />
+</div>

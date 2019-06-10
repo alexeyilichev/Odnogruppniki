@@ -51,13 +51,14 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var grup = await (from name in db.Groups
-                              join user in db.Users
-                              on name.id equals user.id
-                              where name.id == user.id
+            var user = await GetCurrentUser();
+            var grup = await (from gruup in db.Groups
+                              join usr in db.Users
+                              on gruup.id equals usr.id_group
+                              where gruup.id == user.id_group
                               select new GroupMessageViewModel
                               {
-                                  id = name.id
+                                  id = gruup.id
                               }).FirstOrDefaultAsync();
             var date = DateTime.Now.AddDays(-1);
             var messages = await (from message in db.GroupMessages
@@ -65,7 +66,7 @@ namespace Odnogruppniki.Controllers
                                   on message.id_in equals group_in.id
                                   join group_out in db.Groups
                                   on message.id_out equals group_out.id
-                                  where message.id_in == grup.id || message.id_out == grup.id
+                                  where message.id_in == grup.id
                                   select new GroupMessageViewModel
                                   {
                                       id = message.id,
@@ -83,13 +84,14 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> OpenMessages(int par)
         {
-            var grup = await (from name in db.Groups
-                              join user in db.Users
-                              on name.id equals user.id
-                              where name.id == user.id
+            var user = await GetCurrentUser();
+            var grup = await (from gruup in db.Groups
+                              join usr in db.Users
+                              on gruup.id equals usr.id_group
+                              where gruup.id == user.id_group
                               select new GroupMessageViewModel
                               {
-                                  id = name.id
+                                  id = gruup.id
                               }).FirstOrDefaultAsync();
             var date = DateTime.Now.AddDays(-1);
             var messages = new List<GroupMessageViewModel>();
@@ -137,6 +139,7 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> OpenMessage(int id)
         {
+            ViewBag.IsAnswer = true;
             var model = await (from message in db.GroupMessages
                                join group_in in db.Groups
                                on message.id_in equals group_in.id
@@ -160,15 +163,18 @@ namespace Odnogruppniki.Controllers
         [HttpPost]
         public async Task SendMessage(int id_out, string message)
         {
-            var grup = await (from name in db.Groups
-                              join user in db.Users
-                              on name.id equals user.id
-                              where name.id == id_out
+            var user = await GetCurrentUser();
+            var grup = await (from gruup in db.Groups
+                              join usr in db.Users
+                              on gruup.id equals usr.id_group
+                              where gruup.id == user.id_group
                               select new GroupMessageViewModel
                               {
-                                  id = name.id
+                                  id = gruup.id
                               }).FirstOrDefaultAsync();
-            var newMessage = new GroupMessage
+            if (grup.id != id_out)
+            {
+                var newMessage = new GroupMessage
                 {
                     id_in = id_out,
                     id_out = grup.id,
@@ -177,6 +183,15 @@ namespace Odnogruppniki.Controllers
                 };
                 db.GroupMessages.Add(newMessage);
                 await db.SaveChangesAsync();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult NewMessage(int id)
+        {
+            ViewBag.IsAnswer = false;
+            ViewBag.Message = new GroupMessageViewModel { id_out = id, name = "name" };
+            return View("GroupMessage");
         }
 
         private string GetCurrentUserName()

@@ -25,7 +25,7 @@
         <tbody>
             @{ foreach (var group in groups)
                 {
-            <tr onclick="openProfile(@group.id_group)" style="height:50px">
+            <tr onclick="newMessage(@group.id_group)" style="height:50px">
                 <td style="text-align:center">
                     @group.faculty
                 </td>
@@ -46,5 +46,10 @@
     $('#input').keyup(function () {
         table_search($('#input').val(), $('#table tbody tr'), '012');
     });
+
+        function newMessage(id) {
+        window.location = '@Url.Action("NewMessage", "GroupMessage")' + '?id=' + id;
+    }
+
 </script>
 

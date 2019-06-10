@@ -72,6 +72,8 @@ namespace Odnogruppniki.Controllers
             ViewBag.City = personalInfo.city;
             ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name;
             ViewBag.AboutInfo = personalInfo.aboutinfo;
+            ViewBag.UserId = user.id;
+            ViewBag.MyPage = true;
             return View();
         }
 
