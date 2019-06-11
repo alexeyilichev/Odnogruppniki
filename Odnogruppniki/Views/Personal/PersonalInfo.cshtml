@@ -7,6 +7,11 @@
     function newMessage() {
         window.location = '@Url.Action("NewMessage", "PersonalMessage")'+'?id='+@ViewBag.UserId;
     }
+
+    function editPage() {
+        window.location.href = '@Url.Action("Edit","Personal")';
+    }
+
 </script>
       <div>
           <div style="overflow: hidden;">
@@ -24,14 +29,14 @@
           </div>
           @if (ViewBag.MyPage)
           {
-              <div style="width:300px; height:30px">
-                  @Html.ActionLink("Редактировать", "Edit", "Personal", new { area = "" }, new { style = "height:inherit; margin-left:100px; width:100px; border-radius:5px; background-color:cornflowerblue; color:ivory" })
+              <div>
+                  <input class="form-control" type="button" id="editButton" onclick="editPage()" value="Редактировать" style="height:inherit; margin-left:50px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
               </div>
           }
           else
           {
-              <div style="width:300px; height:30px">
-                  <button type="button" style = "height:inherit; margin-left:100px; width:100px; border-radius:5px; background-color:cornflowerblue; color:ivory" onclick="newMessage()">Написать</button>
+              <div>
+                  <input class="form-control" type="button" id="editButton" onclick="newMessage()" value="Написать" style="height:inherit; margin-left:50px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
               </div>
           }
 
