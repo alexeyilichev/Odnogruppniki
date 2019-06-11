@@ -27,10 +27,10 @@
             <div class="navbar-collapse collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { style = "color:ivory" })</li>
-                    <li>@Html.ActionLink("Моя страница", "PersonalInfo", "Personal", new { area = "" }, new { style = "color:ivory" })</li>
                     @{
                         if (isUserAuth)
                         {
+                            <li>@Html.ActionLink("Моя страница", "PersonalInfo", "Personal", new { area = "" }, new { style = "color:ivory" })</li>
                             <li>@Html.ActionLink("Выход", "LogoutPage", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                         }
                         else
@@ -63,11 +63,16 @@
                 </style>
                 <div class="navbar-collapse collapse" id="navbar-collapse-2">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Мои сообщения", "Index", "PersonalMessage", new { area = "" }, new { style = "color:ivory" })</li>
-                        <li>@Html.ActionLink("Групповые сообщения", "Index", "GroupMessage", new { area = "" }, new { style = "color:ivory" })</li>
+                        @{
+                            if (isUserAuth)
+                            {
+                                <li>@Html.ActionLink("Настройки", "Settings", "Home", new { area = "" }, new { style = "color:ivory" })</li>
+                                <li>@Html.ActionLink("Мои сообщения", "Index", "PersonalMessage", new { area = "" }, new { style = "color:ivory" })</li>
+                                <li>@Html.ActionLink("Групповые сообщения", "Index", "GroupMessage", new { area = "" }, new { style = "color:ivory" })</li>
+                            }
+                        }
                         <li>@Html.ActionLink("Поиск групп", "SearchGroup", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                         <li>@Html.ActionLink("Поиск пользователей", "Search", "Home", new { area = "" }, new { style = "color:ivory" })</li>
-                        <li>@Html.ActionLink("Настройки", "Settings", "Home", new { area = "" }, new { style = "color:ivory" })</li>
                     </ul>
                 </div>
             </div>
