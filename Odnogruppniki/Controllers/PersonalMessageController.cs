@@ -9,6 +9,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TLSharp.Core;
+using TLSharp.Core.Requests;
+using TLSharp.Core.Utils;
+using TLSharp.Core.Network;
+using TeleSharp.TL;
+using TLSharp.Core.MTProto;
+using TeleSharp.TL.Messages;
 
 namespace Odnogruppniki.Controllers
 {
@@ -17,6 +24,7 @@ namespace Odnogruppniki.Controllers
     {
         private DBContext _db;
         private UserManager _um;
+        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new WebSessionStore());
 
         public PersonalMessageController() { }
         public PersonalMessageController(DBContext db, UserManager userManager)
@@ -214,6 +222,26 @@ namespace Odnogruppniki.Controllers
                 };
                 db.PersonalMessages.Add(newMessage);
                 await db.SaveChangesAsync();
+            }
+            if (client.IsUserAuthorized())
+            {
+                try
+                {
+                    var number = await (from usr in db.Users
+                                        where usr.id == id_out
+                                        join pi in db.PersonalInfoes
+                                        on usr.id equals pi.id_user
+                                        select pi.phone).FirstOrDefaultAsync();
+                    await client.ConnectAsync();
+                    var contacts = await client.GetContactsAsync();
+                    var userID = contacts.Users.OfType<TLUser>().FirstOrDefault(x => x.Phone == number);
+                    await client.SendMessageAsync(new TLInputPeerUser { UserId = userID.Id }, "You have a new message from " + username + "!");
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
         }
 

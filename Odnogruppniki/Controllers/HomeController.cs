@@ -55,7 +55,7 @@ namespace Odnogruppniki.Controllers
             }
         }
         
-        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new SessionStoreFake());
+        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new WebSessionStore());
         public static string hash = "";
         public TLUser user;
         public const string phone = "+79157566365";
@@ -66,14 +66,15 @@ namespace Odnogruppniki.Controllers
             await Connect();
             if (!client.IsUserAuthorized())
             {
-                return await GetCode();
-            } else
+                return SendCode();
+            }
+            else
             {
-                var facultyforreg = (await(from faculty in db.Faculties
+                var facultyforreg = (await (from faculty in db.Faculties
                                     select faculty).ToListAsync());
-                var depforreg = (await(from department in db.Departments
+                var depforreg = (await (from department in db.Departments
                                 select department).ToListAsync());
-                var groupsforreg = (await(from groups in db.Groups
+                var groupsforreg = (await (from groups in db.Groups
                                     select groups).ToListAsync());
                 ViewBag.Faculties = facultyforreg;
                 ViewBag.Departments = depforreg;
@@ -87,8 +88,19 @@ namespace Odnogruppniki.Controllers
             await client.ConnectAsync();
         }
 
-        private async Task<ActionResult> GetCode()
+        public ActionResult GetCode()
         {
+            return View("GetCode");
+        }
+
+        public ActionResult SendCode()
+        {
+            return View("SendCode");
+        }
+
+        public async Task<ActionResult> SendCodeRequest()
+        {
+            await client.ConnectAsync();
             hash = await client.SendCodeRequestAsync(phone);
             return View("GetCode");
         }
@@ -97,6 +109,7 @@ namespace Odnogruppniki.Controllers
         {
             try
             {
+                await client.ConnectAsync();
                 user = await client.MakeAuthAsync(phone, hash, code);
             }
             catch (Exception ex)

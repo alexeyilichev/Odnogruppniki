@@ -202,6 +202,7 @@
     <Compile Include="Controllers\PersonalMessageController.cs" />
     <Compile Include="Core\SessionStoreFake.cs" />
     <Compile Include="Core\UserManager.cs" />
+    <Compile Include="Core\WebSessionStore.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +281,7 @@
     <Content Include="Views\Home\SearchGroup.cshtml" />
     <Content Include="Views\GroupMessage\Index.cshtml" />
     <Content Include="Views\GroupMessage\GroupMessage.cshtml" />
+    <Content Include="Views\Home\SendCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
