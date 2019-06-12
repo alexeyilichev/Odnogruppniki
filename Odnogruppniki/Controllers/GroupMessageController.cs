@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity.Owin;
 using Odnogruppniki.Core;
 using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
@@ -10,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TeleSharp.TL;
+using TLSharp.Core;
 
 namespace Odnogruppniki.Controllers
 {
@@ -17,6 +18,8 @@ namespace Odnogruppniki.Controllers
     {
         private DBContext _db;
         private UserManager _um;
+
+        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new WebSessionStore());
 
         public GroupMessageController() { }
         public GroupMessageController(DBContext db, UserManager userManager)
@@ -176,19 +179,37 @@ namespace Odnogruppniki.Controllers
                               where gruup.id == user.id_group
                               select new GroupMessageViewModel
                               {
-                                  id = gruup.id
+                                  id = gruup.id,
+                                  name = gruup.name
                               }).FirstOrDefaultAsync();
-            if (grup.id != id_out)
+            var newMessage = new GroupMessage
             {
-                var newMessage = new GroupMessage
+                id_in = id_out,
+                id_out = grup.id,
+                message = message,
+                date = DateTime.UtcNow
+            };
+            db.GroupMessages.Add(newMessage);
+            await db.SaveChangesAsync();
+            if (client.IsUserAuthorized())
+            {
+                var numbers = await (from usr in db.Users
+                                     join gr in db.Groups
+                                     on usr.id_group equals gr.id
+                                     where gr.id == id_out
+                                     join pi in db.PersonalInfoes
+                                     on usr.id equals pi.id_user
+                                     select pi.phone).ToListAsync();
+                foreach (var number in numbers)
                 {
-                    id_in = id_out,
-                    id_out = grup.id,
-                    message = message,
-                    date = DateTime.UtcNow
-                };
-                db.GroupMessages.Add(newMessage);
-                await db.SaveChangesAsync();
+                    await client.ConnectAsync();
+                    var contacts = await client.GetContactsAsync();
+                    var userID = contacts.Users.OfType<TLUser>().FirstOrDefault(x => x.Phone == number);
+                    if (userID != null)
+                    {
+                        await client.SendMessageAsync(new TLInputPeerUser { UserId = userID.Id }, "You have a new message from " + grup.name + "!");
+                    }
+                }
             }
         }
 

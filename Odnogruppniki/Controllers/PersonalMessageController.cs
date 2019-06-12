@@ -238,7 +238,11 @@ namespace Odnogruppniki.Controllers
                 await client.ConnectAsync();
                 var contacts = await client.GetContactsAsync();
                 var userID = contacts.Users.OfType<TLUser>().FirstOrDefault(x => x.Phone == number);
-                await client.SendMessageAsync(new TLInputPeerUser { UserId = userID.Id }, "You have a new message from " + userPersonal + "!");
+                if (userID != null)
+                {
+                    await client.SendMessageAsync(new TLInputPeerUser { UserId = userID.Id }, "You have a new message from " + userPersonal + "!");
+
+                }
             }
         }
 
