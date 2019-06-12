@@ -60,13 +60,12 @@ namespace Odnogruppniki.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            await Connect();
-            if (!client.IsUserAuthorized())
-            {
-                return SendCode();
-            }
-            else
-            {
+            var user = await GetCurrentUser();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == user.login
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
                 var facultyforreg = (await (from faculty in db.Faculties
                                             select faculty).ToListAsync());
                 var depforreg = (await (from department in db.Departments
@@ -77,6 +76,17 @@ namespace Odnogruppniki.Controllers
                 ViewBag.Departments = depforreg;
                 ViewBag.Groups = groupsforreg;
                 return View("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> TLSettings()
+        {
+            if (!client.IsUserAuthorized())
+            {
+                return SendCode();
+            } else
+            {
+                return await Index();
             }
         }
 
