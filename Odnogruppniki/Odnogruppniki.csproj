@@ -276,7 +276,6 @@
     <Content Include="Views\PersonalMessage\PersonalMessage.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Personal\Edit.cshtml" />
-    <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\GetCode.cshtml" />
     <Content Include="Views\Home\SearchGroup.cshtml" />
     <Content Include="Views\GroupMessage\Index.cshtml" />

@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Odnogruppniki.Core;
 using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -54,7 +51,7 @@ namespace Odnogruppniki.Controllers
                 _um = value;
             }
         }
-        
+
         public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new WebSessionStore());
         public static string hash = "";
         public TLUser user;
@@ -71,11 +68,11 @@ namespace Odnogruppniki.Controllers
             else
             {
                 var facultyforreg = (await (from faculty in db.Faculties
-                                    select faculty).ToListAsync());
+                                            select faculty).ToListAsync());
                 var depforreg = (await (from department in db.Departments
-                                select department).ToListAsync());
+                                        select department).ToListAsync());
                 var groupsforreg = (await (from groups in db.Groups
-                                    select groups).ToListAsync());
+                                           select groups).ToListAsync());
                 ViewBag.Faculties = facultyforreg;
                 ViewBag.Departments = depforreg;
                 ViewBag.Groups = groupsforreg;
@@ -107,16 +104,8 @@ namespace Odnogruppniki.Controllers
 
         public async Task<ActionResult> MakeAuth(string code)
         {
-            try
-            {
-                await client.ConnectAsync();
-                user = await client.MakeAuthAsync(phone, hash, code);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            await client.ConnectAsync();
+            user = await client.MakeAuthAsync(phone, hash, code);
             return await Index();
         }
 
@@ -149,7 +138,8 @@ namespace Odnogruppniki.Controllers
                 HttpContext.GetOwinContext().Authentication.SignIn(
                    new AuthenticationProperties { IsPersistent = false }, ident);
                 return Json(new { Success = true });
-            } else
+            }
+            else
             {
                 return Json(new { Success = false, Error = "Login or password are incorrect!" });
             }
@@ -160,7 +150,7 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> Register()
         {
             var facultyforreg = (await (from faculty in db.Faculties
-                                    select faculty).ToListAsync());
+                                        select faculty).ToListAsync());
             var depforreg = (await (from department in db.Departments
                                     select department).ToListAsync());
             var groupsforreg = (await (from groups in db.Groups
@@ -246,8 +236,8 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> OpenProfile(int id)
         {
             var personalInfo = (await (from person in db.PersonalInfoes
-                               where person.id_user == id
-                               select person).FirstOrDefaultAsync());
+                                       where person.id_user == id
+                                       select person).FirstOrDefaultAsync());
             var username = GetCurrentUserName();
             ViewBag.RoleName = (from usr in db.Users
                                 where usr.login == username
@@ -268,18 +258,6 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
-        public ActionResult Settings()
-        {
-            var username = GetCurrentUserName();
-            ViewBag.RoleName = (from usr in db.Users
-                                where usr.login == username
-                                join role in db.Roles
-                                on usr.id_role equals role.id
-                                select role.name).FirstOrDefault();
-            return View("Settings");
-        }
-        
-        [HttpGet]
         public ActionResult LogoutPage()
         {
             return View();
@@ -293,7 +271,8 @@ namespace Odnogruppniki.Controllers
                 HttpContext.GetOwinContext().Authentication.SignOut(
                     new AuthenticationProperties { IsPersistent = false }, User.Identity.AuthenticationType);
                 return Json(new { Success = true });
-            } else
+            }
+            else
             {
                 return Json(new { Success = false, Error = "User is not login!" });
             }
@@ -303,7 +282,7 @@ namespace Odnogruppniki.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(string login, string password, string fio, string phone, int id_faculty, int id_department, int id_group)
         {
-            if(await db.Users.FirstOrDefaultAsync(x => x.login == login) == null)
+            if (await db.Users.FirstOrDefaultAsync(x => x.login == login) == null)
             {
                 var newUser = new User
                 {
@@ -399,7 +378,5 @@ namespace Odnogruppniki.Controllers
             var name = GetCurrentUserName();
             return await db.Users.FirstOrDefaultAsync(x => x.login == name);
         }
-
-
     }
 }

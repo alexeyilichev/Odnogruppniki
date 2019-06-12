@@ -139,6 +139,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public async Task<ActionResult> OpenMessage(int id)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.IsAnswer = true;
             var model = await (from message in db.GroupMessages
                                join group_in in db.Groups
@@ -189,6 +195,12 @@ namespace Odnogruppniki.Controllers
         [HttpGet]
         public ActionResult NewMessage(int id)
         {
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.IsAnswer = false;
             ViewBag.Message = new GroupMessageViewModel { id_out = id, name = "name" };
             return View("GroupMessage");
