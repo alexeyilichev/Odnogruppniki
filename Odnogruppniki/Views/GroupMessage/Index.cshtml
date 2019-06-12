@@ -10,19 +10,9 @@
     function openMessage(id) {
         window.location = '@Url.Action("OpenMessage","GroupMessage")' + '?id=' + id;
     }
-    function openMessages(par) {
-        window.location = '@Url.Action("OpenMessages", "GroupMessage")' + '?par=' + par;
-    }
 </script>
 
-<div style="width:80%; margin-left:10%; margin-right:10%; padding-top:5%; margin-bottom:2%">
-    <button type="button" style="background-color:steelblue; border-radius:20px; width:40px">
-        <span class="glyphicon glyphicon-arrow-up" onclick="openMessages(1)"></span>
-    </button>
-    <button type="button" style="background-color:steelblue; border-radius:20px; width:40px">
-        <span class="glyphicon glyphicon-arrow-down" onclick="openMessages(2)"></span>
-    </button>
-</div>
+
 
 <style>
     #container {
@@ -48,6 +38,8 @@
         z-index: 1;
     }
 </style>
+
+<br /><br />
 
 <div class="center-block" style="width:80%">
     @{
