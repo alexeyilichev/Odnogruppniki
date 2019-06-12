@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odnogruppniki", "Odnogruppniki\Odnogruppniki.csproj", "{7EC2AE21-C674-425F-AB8E-2D8F188E67D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Odnogruppniki.Tests", "Odnogruppniki.Tests\Odnogruppniki.Tests.csproj", "{43D1EEB1-9B2C-4D1B-BBF2-065815CA6EFB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{7EC2AE21-C674-425F-AB8E-2D8F188E67D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EC2AE21-C674-425F-AB8E-2D8F188E67D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EC2AE21-C674-425F-AB8E-2D8F188E67D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43D1EEB1-9B2C-4D1B-BBF2-065815CA6EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43D1EEB1-9B2C-4D1B-BBF2-065815CA6EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43D1EEB1-9B2C-4D1B-BBF2-065815CA6EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43D1EEB1-9B2C-4D1B-BBF2-065815CA6EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
