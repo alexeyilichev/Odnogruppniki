@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Odnogruppniki.Core;
 using Odnogruppniki.Models;
 using Odnogruppniki.Models.DBModels;
-using System.Collections.Generic;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TeleSharp.TL;
+using TLSharp.Core;
 
 namespace Odnogruppniki.Controllers
 {
@@ -51,20 +52,61 @@ namespace Odnogruppniki.Controllers
             }
         }
 
+        public TelegramClient client = new TelegramClient(668625, "0eb006301fad060c6212dda25f9c31e6", new WebSessionStore());
+        public static string hash = "";
+        public TLUser user;
+        public const string phone = "+79157566365";
+
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            var facultyforreg = (await(from faculty in db.Faculties
-                                       select faculty).ToListAsync());
-            var depforreg = (await(from department in db.Departments
-                                   select department).ToListAsync());
-            var groupsforreg = (await(from groups in db.Groups
-                                      select groups).ToListAsync());
-            ViewBag.Faculties = facultyforreg;
-            ViewBag.Departments = depforreg;
-            ViewBag.Groups = groupsforreg;
-            ViewBag.UserName = db.Users.FirstOrDefault().login; //test data
-            return View("Index");
+            await Connect();
+            if (!client.IsUserAuthorized())
+            {
+                return SendCode();
+            }
+            else
+            {
+                var facultyforreg = (await (from faculty in db.Faculties
+                                            select faculty).ToListAsync());
+                var depforreg = (await (from department in db.Departments
+                                        select department).ToListAsync());
+                var groupsforreg = (await (from groups in db.Groups
+                                           select groups).ToListAsync());
+                ViewBag.Faculties = facultyforreg;
+                ViewBag.Departments = depforreg;
+                ViewBag.Groups = groupsforreg;
+                return View("Index");
+            }
+        }
+
+        private async Task Connect()
+        {
+            await client.ConnectAsync();
+        }
+
+        public ActionResult GetCode()
+        {
+            return View("GetCode");
+        }
+
+        public ActionResult SendCode()
+        {
+            return View("SendCode");
+        }
+
+        public async Task<ActionResult> SendCodeRequest()
+        {
+            await client.ConnectAsync();
+            hash = await client.SendCodeRequestAsync(phone);
+            return View("GetCode");
+        }
+
+        public async Task<ActionResult> MakeAuth(string code)
+        {
+            await client.ConnectAsync();
+            user = await client.MakeAuthAsync(phone, hash, code);
+            return await Index();
         }
 
         [AllowAnonymous]
@@ -96,7 +138,8 @@ namespace Odnogruppniki.Controllers
                 HttpContext.GetOwinContext().Authentication.SignIn(
                    new AuthenticationProperties { IsPersistent = false }, ident);
                 return Json(new { Success = true });
-            } else
+            }
+            else
             {
                 return Json(new { Success = false, Error = "Login or password are incorrect!" });
             }
@@ -107,7 +150,7 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> Register()
         {
             var facultyforreg = (await (from faculty in db.Faculties
-                                    select faculty).ToListAsync());
+                                        select faculty).ToListAsync());
             var depforreg = (await (from department in db.Departments
                                     select department).ToListAsync());
             var groupsforreg = (await (from groups in db.Groups
@@ -195,8 +238,14 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> OpenProfile(int id)
         {
             var personalInfo = (await (from person in db.PersonalInfoes
-                               where person.id_user == id
-                               select person).FirstOrDefaultAsync());
+                                       where person.id_user == id
+                                       select person).FirstOrDefaultAsync());
+            var username = GetCurrentUserName();
+            ViewBag.RoleName = (from usr in db.Users
+                                where usr.login == username
+                                join role in db.Roles
+                                on usr.id_role equals role.id
+                                select role.name).FirstOrDefault();
             ViewBag.Photo = personalInfo.photo;
             ViewBag.Name = personalInfo.name;
             ViewBag.University = (await db.Universities.FirstOrDefaultAsync(x => x.id == personalInfo.id_university)).name;
@@ -211,12 +260,6 @@ namespace Odnogruppniki.Controllers
         }
 
         [HttpGet]
-        public ActionResult Settings()
-        {
-            return View("Index");
-        }
-        
-        [HttpGet]
         public ActionResult LogoutPage()
         {
             return View();
@@ -230,7 +273,8 @@ namespace Odnogruppniki.Controllers
                 HttpContext.GetOwinContext().Authentication.SignOut(
                     new AuthenticationProperties { IsPersistent = false }, User.Identity.AuthenticationType);
                 return Json(new { Success = true });
-            } else
+            }
+            else
             {
                 return Json(new { Success = false, Error = "User is not login!" });
             }
@@ -240,7 +284,7 @@ namespace Odnogruppniki.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(string login, string password, string fio, string phone, int id_faculty, int id_department, int id_group)
         {
-            if(await db.Users.FirstOrDefaultAsync(x => x.login == login) == null)
+            if (await db.Users.FirstOrDefaultAsync(x => x.login == login) == null)
             {
                 var newUser = new User
                 {
@@ -336,7 +380,5 @@ namespace Odnogruppniki.Controllers
             var name = GetCurrentUserName();
             return await db.Users.FirstOrDefaultAsync(x => x.login == name);
         }
-
-
     }
 }

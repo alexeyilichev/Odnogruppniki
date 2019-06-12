@@ -25,6 +25,8 @@
 else
 {
     <br /><br />
+    if (ViewBag.RoleName != "Guest" && ViewBag.RoleName != "Student")
+    {
         if (message.name != user)
         {
             <div style="display:flex; justify-content:space-between; margin-left:10%; margin-right:10%">
@@ -34,9 +36,10 @@ else
                 </button>
             </div>
         }
-        }
+    }
+}
 
-            <script>
+<script>
                 function sendMessage(id_out) {
                     debugger;
         var url = '@Url.Action("SendMessage", "GroupMessage")';
@@ -46,7 +49,7 @@ else
             window.location = '@Url.Action("Index", "GroupMessage")';
         });
     }
-            </script>
+</script>
 
 
 
