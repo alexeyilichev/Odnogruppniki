@@ -180,6 +180,7 @@ namespace Odnogruppniki.Controllers
             await db.SaveChangesAsync();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Search()
         {
@@ -212,6 +213,7 @@ namespace Odnogruppniki.Controllers
             return View("Search");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> SearchGroup()
         {

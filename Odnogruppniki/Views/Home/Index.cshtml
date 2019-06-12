@@ -88,14 +88,15 @@
 </script>
 
 <div class="row">
-    <h4>Добавление института</h4>
-    <input type="text" name="facultyadd" id="facultyadd" />
-    <input type="button" id="facultyButton" onclick="facadd()" value="Добавить институт" style="width:200px; margin-left:22.2%" />
+    <h4 style="margin-left:20px">Добавление института</h4>
+    <input class="form-control" type="text" name="facultyadd" id="facultyadd" style="margin-left:20px" />
+    <input class="form-control" type="button" id="facultyButton" onclick="facadd()" value="Добавить институт" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
 </div>
+<br />
 <div class="row">
-    <h4>Добавление кафедры</h4>
-    <input type="text" name="departmentadd" id="departmentadd" />
-        <select id="facultySelect" style="width:200px; height:25px">
+    <h4 style="margin-left:20px">Добавление кафедры</h4>
+    <input class="form-control" type="text" name="departmentadd" id="departmentadd" style="margin-left:20px" />
+        <select class="form-control" id="facultySelect" style="margin-left:20px">
             <option selected>Выберите институт...</option>
             @{ foreach (var faculty in faculties)
                 {
@@ -103,18 +104,19 @@
                 }
             }
         </select>
-    <input type="button" id="departmentButton" onclick="depadd()" value="Добавить кафедру" style="width:200px; margin-left:9%" />
+    <input class="form-control" type="button" id="departmentButton" onclick="depadd()" value="Добавить кафедру" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
 </div>
+<br />
 <div class="row">
-    <h4>Добавление группы</h4>
-    <input type="text" name="groupadd" id="groupadd" />
-        <select id="departmentSelect" style="width:200px; height:25px">
-            <option selected>Выберите кафедру...</option>
-            @{ foreach (var department in departments)
-                {
-                    <option value="@department.id">@department.name</option>
-                }
+    <h4 style="margin-left:20px">Добавление группы</h4>
+    <input class="form-control" type="text" name="groupadd" id="groupadd" style="margin-left:20px" />
+    <select class="form-control" id="departmentSelect" style="margin-left:20px">
+        <option selected>Выберите кафедру...</option>
+        @{ foreach (var department in departments)
+            {
+                <option value="@department.id">@department.name</option>
             }
-        </select>
-    <input type="button" id="groupButton" onclick="groupadd()" value="Добавить группу" style="width:200px; margin-left:9%" />
+        }
+    </select>
+    <input class="form-control" type="button" id="groupButton" onclick="groupadd()" value="Добавить группу" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
 </div>
