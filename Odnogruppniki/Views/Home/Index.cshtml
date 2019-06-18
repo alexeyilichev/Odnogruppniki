@@ -90,6 +90,7 @@
                     }
                 }
 </script>
+
 @if (ViewBag.RoleName != "Admin")
 {
     <h1>Добро пожаловать в Одногруппники!</h1>
@@ -98,40 +99,44 @@
     <h2>Приятного пользования!</h2>
 }
 
-@if (ViewBag.RoleName == "Admin")
+@if (User.Identity.IsAuthenticated)
 {
-    <input class="form-control" type="button" id="editButton" onclick="editTelegram()" value="Настройка уведомлений Telegram" style="height:inherit; margin-left:8px; width:300px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
-    <div class="row">
-        <h4 style="margin-left:20px">Добавление института</h4>
-        <input class="form-control" type="text" name="facultyadd" id="facultyadd" style="margin-left:20px" />
-        <input class="form-control" type="button" id="facultyButton" onclick="facadd()" value="Добавить институт" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
-    </div>
-    <br />
-    <div class="row">
-        <h4 style="margin-left:20px">Добавление кафедры</h4>
-        <input class="form-control" type="text" name="departmentadd" id="departmentadd" style="margin-left:20px" />
-        <select class="form-control" id="facultySelect" style="margin-left:20px">
-            <option selected>Выберите институт...</option>
-            @{ foreach (var faculty in faculties)
-                {
-                    <option value="@faculty.id">@faculty.name</option>
+
+    if (ViewBag.RoleName == "Admin")
+    {
+        <input class="form-control" type="button" id="editButton" onclick="editTelegram()" value="Настройка уведомлений Telegram" style="height:inherit; margin-left:8px; width:300px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
+        <div class="row">
+            <h4 style="margin-left:20px">Добавление института</h4>
+            <input class="form-control" type="text" name="facultyadd" id="facultyadd" style="margin-left:20px" />
+            <input class="form-control" type="button" id="facultyButton" onclick="facadd()" value="Добавить институт" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
+        </div>
+        <br />
+        <div class="row">
+            <h4 style="margin-left:20px">Добавление кафедры</h4>
+            <input class="form-control" type="text" name="departmentadd" id="departmentadd" style="margin-left:20px" />
+            <select class="form-control" id="facultySelect" style="margin-left:20px">
+                <option selected>Выберите институт...</option>
+                @{ foreach (var faculty in faculties)
+                    {
+                        <option value="@faculty.id">@faculty.name</option>
+                    }
                 }
-            }
-        </select>
-        <input class="form-control" type="button" id="departmentButton" onclick="depadd()" value="Добавить кафедру" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
-    </div>
-    <br />
-    <div class="row">
-        <h4 style="margin-left:20px">Добавление группы</h4>
-        <input class="form-control" type="text" name="groupadd" id="groupadd" style="margin-left:20px" />
-        <select class="form-control" id="departmentSelect" style="margin-left:20px">
-            <option selected>Выберите кафедру...</option>
-            @{ foreach (var department in departments)
-                {
-                    <option value="@department.id">@department.name</option>
+            </select>
+            <input class="form-control" type="button" id="departmentButton" onclick="depadd()" value="Добавить кафедру" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
+        </div>
+        <br />
+        <div class="row">
+            <h4 style="margin-left:20px">Добавление группы</h4>
+            <input class="form-control" type="text" name="groupadd" id="groupadd" style="margin-left:20px" />
+            <select class="form-control" id="departmentSelect" style="margin-left:20px">
+                <option selected>Выберите кафедру...</option>
+                @{ foreach (var department in departments)
+                    {
+                        <option value="@department.id">@department.name</option>
+                    }
                 }
-            }
-        </select>
-        <input class="form-control" type="button" id="groupButton" onclick="groupadd()" value="Добавить группу" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
-    </div>
+            </select>
+            <input class="form-control" type="button" id="groupButton" onclick="groupadd()" value="Добавить группу" style="height:inherit; margin-left:20px; width:200px; border-radius:8px; background-color:cornflowerblue; color:ivory" />
+        </div>
+    }
 }

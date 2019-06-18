@@ -61,11 +61,18 @@ namespace Odnogruppniki.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUser();
-            ViewBag.RoleName = (from usr in db.Users
-                                where usr.login == user.login
-                                join role in db.Roles
-                                on usr.id_role equals role.id
-                                select role.name).FirstOrDefault();
+            if (user != null)
+            {
+                ViewBag.RoleName = (from usr in db.Users
+                                    where usr.login == user.login
+                                    join role in db.Roles
+                                    on usr.id_role equals role.id
+                                    select role.name).FirstOrDefault();
+            }
+            else
+            {
+                ViewBag.RoleName = "Guest";
+            }
                 var facultyforreg = (await (from faculty in db.Faculties
                                             select faculty).ToListAsync());
                 var depforreg = (await (from department in db.Departments
@@ -250,6 +257,7 @@ namespace Odnogruppniki.Controllers
             var personalInfo = (await (from person in db.PersonalInfoes
                                        where person.id_user == id
                                        select person).FirstOrDefaultAsync());
+            var user = (await db.Users.FirstOrDefaultAsync(x => x.id == id));
             var username = GetCurrentUserName();
             ViewBag.RoleName = (from usr in db.Users
                                 where usr.login == username
@@ -262,10 +270,12 @@ namespace Odnogruppniki.Controllers
             ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name;
             ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ;
             ViewBag.City = personalInfo.city;
-            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name;
+            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == user.id_role)).name;
             ViewBag.AboutInfo = personalInfo.aboutinfo;
             ViewBag.UserId = id;
             ViewBag.MyPage = false;
+            ViewBag.Roles = (await db.Roles.ToListAsync());
+            ViewBag.Group = (await db.Groups.FirstOrDefaultAsync(x => x.id == user.id_group)).name;
             return View("/Views/Personal/PersonalInfo.cshtml");
         }
 

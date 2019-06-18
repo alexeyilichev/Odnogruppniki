@@ -76,11 +76,23 @@ namespace Odnogruppniki.Controllers
             ViewBag.Faculty = (await db.Faculties.FirstOrDefaultAsync(x => x.id == personalInfo.id_faculty)).name;
             ViewBag.Department = (await db.Departments.FirstOrDefaultAsync(x => x.id == personalInfo.id_department)).name; ;
             ViewBag.City = personalInfo.city;
-            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == personalInfo.id_role)).name;
+            ViewBag.Role = (await db.Roles.FirstOrDefaultAsync(x => x.id == user.id_role)).name;
             ViewBag.AboutInfo = personalInfo.aboutinfo;
             ViewBag.UserId = user.id;
             ViewBag.MyPage = true;
+            ViewBag.Group = (await db.Groups.FirstOrDefaultAsync(x => x.id == user.id_group)).name;
+            ViewBag.Roles = (await db.Roles.ToListAsync());
             return View();
+        }
+
+        [HttpPost]
+        public async Task ChangeRole(int id, int role)
+        {
+            var user = await (from u in db.Users
+                              where u.id == id
+                              select u).FirstOrDefaultAsync();
+            user.id_role = role;
+            await db.SaveChangesAsync();
         }
 
         [HttpGet]

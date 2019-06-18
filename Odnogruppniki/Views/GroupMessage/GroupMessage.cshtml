@@ -41,7 +41,6 @@ else
 
 <script>
                 function sendMessage(id_out) {
-                    debugger;
         var url = '@Url.Action("SendMessage", "GroupMessage")';
         var message = $("#textMessage").val();
         var data = { id_out: id_out, message: message };
